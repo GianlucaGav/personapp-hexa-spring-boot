@@ -17,9 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @UseCase
 public class PersonUseCase implements PersonInputPort {
 
-	
 	private PersonOutputPort personPersintence;
-	
+
+//	Qualifier es una etiqueta que sirve para identificar un bean en el contenedor de Spring.
+//	Por ejemplo en este caso se esta inyectando un bean de tipo PersonOutputPort con el nombre "personOutputAdapterMaria" en el constructor de la clase PersonUseCase.
+//	El Qualifier en este caso particular hace de filtro para que Spring inyecte el bean correcto en el constructor.
+//	Sin embargo, si se inyecta alguna
 	public PersonUseCase(@Qualifier("personOutputAdapterMaria") PersonOutputPort personPersintence) {
 		this.personPersintence=personPersintence;
 	}
@@ -46,6 +49,7 @@ public class PersonUseCase implements PersonInputPort {
 
 	@Override
 	public Boolean drop(Integer identification) throws NoExistException {
+		log.info("Into drop in PersonUseCase using PersonOutputPort");
 		Person oldPerson = personPersintence.findById(identification);
 		if (oldPerson != null)
 			return personPersintence.delete(identification);
@@ -55,12 +59,13 @@ public class PersonUseCase implements PersonInputPort {
 
 	@Override
 	public List<Person> findAll() {
-		log.info("Output: " + personPersintence.getClass());
+		log.info("Into findAll in PersonUseCase using PersonOutputPort");
 		return personPersintence.find();
 	}
 
 	@Override
 	public Person findOne(Integer identification) throws NoExistException {
+		log.info("Into findOne in PersonUserCase using PersonOutputPort receiving" + personPersintence.findById(identification));
 		Person oldPerson = personPersintence.findById(identification);
 		if (oldPerson != null)
 			return oldPerson;
@@ -68,12 +73,14 @@ public class PersonUseCase implements PersonInputPort {
 	}
 
 	@Override
-	public Integer count() {
-		return findAll().size();
+	public Long count() {
+		log.info("Into count in PersonUseCase");
+		return personPersintence.count();
 	}
 
 	@Override
 	public List<Phone> getPhones(Integer identification) throws NoExistException {
+		log.info("Into getPhones in Person Use Case using PersonOutputPort");
 		Person oldPerson = personPersintence.findById(identification);
 		if (oldPerson != null)
 			return oldPerson.getPhoneNumbers();

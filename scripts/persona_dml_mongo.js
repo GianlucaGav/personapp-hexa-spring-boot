@@ -1,4 +1,7 @@
-use prueba_db
+db.createCollection("persona");
+db.createCollection("estudios");
+db.createCollection("profesion");
+db.createCollection("telefono");
 
 db.persona.insertMany([
 	{
@@ -40,4 +43,4 @@ db.persona.insertMany([
 		"edad": NumberInt(18),
 		"_class": "co.edu.javeriana.as.personapp.mongo.document.PersonaDocument"
 	}
-], { ordered: false })
+], { ordered: false });
